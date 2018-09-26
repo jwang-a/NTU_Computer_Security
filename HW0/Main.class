@@ -1,0 +1,26 @@
+// Decompiled using: fernflower
+// Took: 2758ms
+
+import java.util.Arrays;
+
+public class Main {
+   public static void main(String[] var0) {
+      if (var0.length != 1) {
+         System.out.println("Usage: java Main [password]");
+      } else {
+         byte[] var1 = var0[0].getBytes();
+
+         for(int var2 = 0; var2 < var1.length; ++var2) {
+            var1[var2] = (byte)(var1[var2] ^ (var2 * 42 + 1 ^ 66) & 255);
+         }
+
+         byte[] var3 = new byte[]{37, 5, 118, 90, -112, -13, -34, 7, 106, 102, -115, -20, -51, 0, 80, 84, -115, -3, -34, 2, 121, 84, -87, -8};
+         if (Arrays.equals(var1, var3)) {
+            System.out.println("OK");
+         } else {
+            System.out.println("Nope");
+         }
+
+      }
+   }
+}
