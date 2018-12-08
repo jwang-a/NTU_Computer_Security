@@ -22,7 +22,7 @@ def login(usr):
 ## Tips: MD5 collision for arbitrary IV can be cracked within minutes
 ##       Meaning that a prefix of N*(block_size) can be set beforehand'
 ## Tips: A,B,C,D of md5 != digest, since a padding scheme is present in digest
-## Tips: CTR mode encryption is plain XOR if IV is leaked
+## Tips: CTR mode is plain XOR if two of IV/CBC_result/Ciphertext is given
 ## Additional : Padding of md5 is interesting >>
 ##              Step1 : a single bit 1 is added
 ##              Step2 : bit 0s are added until bit_len(msg)%512=448
@@ -46,6 +46,7 @@ usr1 = '00'*51+usr1
 usr2 = '00'*51+usr2
 
 ## Generate aes of usr2
+## Same CTR starting num is the key
 iv, aes= register(usr1)
 aes2 = hex(int(aes[:358],16)^int(usr1,16)^int(usr2,16))[2:].rjust(358,'0').encode('utf-8')+aes[358:]
 
