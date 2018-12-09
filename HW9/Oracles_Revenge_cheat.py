@@ -20,7 +20,7 @@ def verify(token,vc):
 ###Start exploint
 ## This solution utilizes msgpack format
 ## The packed message for this usr and password would be
-##   b'\x83\xa3usr\xa5aaaaa\xa3pwd\xbcaaaaaaaaaaaaaaaaaaaaaaaaaaaa\xa2vc\xda\x00 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+##   b'\x83\xa3usr\xa5aaaaa\xa3pwd\xbcaaaaaaaaaaaaaaaaaaaaaaaaaaaa\xa2vc\xda\x00(' + [40 bytes of vc]
 ##   notice that b'\xa2vc\xda' is located at the end of the third block
 ##   by setting b'\xda' to b'\xa0', we can set the length of vc to 0
 ##   this can be done by messing with the last byte of the previous(second) block
