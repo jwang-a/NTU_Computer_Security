@@ -1,5 +1,6 @@
+import json
+from Crypto.Util.number import *
 import gmpy2
-
 
 ###Utils
 def gcd(a,b):

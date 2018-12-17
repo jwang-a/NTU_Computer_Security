@@ -1,5 +1,5 @@
+from Crypto.Util.number import *
 from pwn import *
-import math
 
 ###Utils
 def info():
