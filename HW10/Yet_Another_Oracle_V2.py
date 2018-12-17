@@ -53,7 +53,7 @@ def search(c,e,n,b_known):
 
 ###Start Exploit
 ## Main idea : LSB oracle
-## different from the other version, this oracle can query multibytes at once
+## different from the other version, this oracle can query multibits at once
 
 r = remote('csie.ctf.tw',10140)
 
